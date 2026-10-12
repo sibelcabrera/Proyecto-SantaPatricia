@@ -1,0 +1,13 @@
+# Backend (Maven): archivos compilados
+backend/target/
+backend/nbproject/private/
+
+# Frontend (Node): librerías descargadas y compilación
+frontend/node_modules/
+frontend/dist/
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/

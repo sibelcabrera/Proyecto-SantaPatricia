@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_1.xsd"
+         version="6.1">
+
+    <display-name>Santa Patricia - Backend</display-name>
+
+    <!--
+    FILTROS: se ejecutan ANTES de cada Servlet, en el orden en que aparecen aquí.
+      1. CorsFilter     -> permite que React (localhost:5173) llame a esta API.
+      2. SeguridadFilter -> revisa el token JWT en todas las rutas /api/* (menos el login).
+    -->
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>pe.edu.isil.santapatricia.config.CorsFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>SeguridadFilter</filter-name>
+        <filter-class>pe.edu.isil.santapatricia.config.SeguridadFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SeguridadFilter</filter-name>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+</web-app>
