@@ -1,6 +1,6 @@
 -- =====================================================================
 --  SANTA PATRICIA - Sistema de Inventario (Sprint 1)
---  ESQUEMA de la base de datos: crea la base y sus 4 tablas.
+--  ESQUEMA de la base de datos: crea la base y sus 6 tablas.
 --
 --  Cómo usarlo: MySQL Workbench -> File -> Open SQL Script -> este archivo
 --               -> botón del rayo (ejecutar todo).
@@ -54,6 +54,36 @@ CREATE TABLE usuarios (
     CONSTRAINT pk_usuarios        PRIMARY KEY (id),
     CONSTRAINT uk_usuarios_correo UNIQUE (correo),
     CONSTRAINT fk_usuarios_rol    FOREIGN KEY (rol_id) REFERENCES roles (id)
+);
+
+-- ---------------------------------------------------------------------
+-- 2b. TURNOS  (HU01 - ampliación pedida en la revisión del Sprint 1)
+-- Los horarios de trabajo del local. Quien inicia sesión elige su turno.
+-- ---------------------------------------------------------------------
+CREATE TABLE turnos (
+    id           INT         NOT NULL AUTO_INCREMENT,
+    codigo       VARCHAR(10) NOT NULL,   -- MANANA
+    nombre       VARCHAR(30) NOT NULL,   -- Mañana
+    hora_inicio  TIME        NOT NULL,   -- 06:00
+    hora_fin     TIME        NOT NULL,   -- 14:30
+    CONSTRAINT pk_turnos        PRIMARY KEY (id),
+    CONSTRAINT uk_turnos_codigo UNIQUE (codigo)
+);
+
+-- ---------------------------------------------------------------------
+-- 2c. INICIOS_TURNO  (HU01)
+-- Cada login correcto deja aquí una fila: QUIÉN entró, en QUÉ turno y CUÁNDO.
+-- Lo escribe el sistema (nadie lo llena a mano). En el Sprint 2 los
+-- movimientos (entradas/salidas) también guardarán el turno.
+-- ---------------------------------------------------------------------
+CREATE TABLE inicios_turno (
+    id          INT      NOT NULL AUTO_INCREMENT,
+    usuario_id  INT      NOT NULL,
+    turno_id    INT      NOT NULL,
+    inicio      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pk_inicios_turno         PRIMARY KEY (id),
+    CONSTRAINT fk_inicios_turno_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios (id),
+    CONSTRAINT fk_inicios_turno_turno   FOREIGN KEY (turno_id)   REFERENCES turnos (id)
 );
 
 -- ---------------------------------------------------------------------

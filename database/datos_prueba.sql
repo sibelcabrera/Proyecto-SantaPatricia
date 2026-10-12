@@ -30,6 +30,13 @@ FROM (VALUES
 JOIN roles r ON r.codigo = v.rol;
 
 -- ---------------------------------------------------------------------
+-- Turnos del local (el usuario elige uno al iniciar sesión)
+-- ---------------------------------------------------------------------
+INSERT INTO turnos (codigo, nombre, hora_inicio, hora_fin) VALUES
+    ('MANANA', 'Mañana', '06:00', '14:30'),
+    ('TARDE',  'Tarde',  '14:30', '23:00');
+
+-- ---------------------------------------------------------------------
 -- Categorías (áreas del negocio)
 -- ---------------------------------------------------------------------
 INSERT INTO categorias (codigo, nombre) VALUES

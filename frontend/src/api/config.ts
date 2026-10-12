@@ -23,10 +23,12 @@ export const API_CONFIG = {
 // ╚══════════════════════════════════════════════════════════════════╝
 export const ENDPOINTS = {
   auth: {
-    // 🔐 POST → recibe { correo, password } y devuelve { token, usuario }
+    // 🔐 POST → recibe { correo, password, turno } y devuelve { token, usuario }
     login: '/auth/login',
     // ✅ GET → con el token en la cabecera, devuelve el usuario si el token sigue siendo válido
     validarToken: '/auth/me',
+    // 🕘 GET (libre, sin token) → turnos para el desplegable del login
+    turnos: '/auth/turnos',
   },
   inventario: {
     // 📦 GET (listar) y POST (crear)

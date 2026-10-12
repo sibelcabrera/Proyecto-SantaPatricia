@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Santa Patricia · Sprint 1 · Documento del proyecto</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+  :root { --pri: #B85D19; --osc: #1E293B; --suave: #64748B; --borde: #E2E8F0; --fondo: #F8FAFC;
+          --ok: #0F9D6B; --okf: #E7F7F0; --av: #B7791F; --avf: #FFF6E5; --mal: #C2410C; --malf: #FFF1EB; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: var(--osc); font-size: 10.5pt; line-height: 1.5; margin: 0; }
+  h1, h2, h3 { line-height: 1.25; color: var(--osc); }
+  h2 { font-size: 17pt; margin: 0 0 10px; padding-bottom: 6px; border-bottom: 3px solid var(--pri); break-after: avoid; }
+  h3 { font-size: 12.5pt; margin: 18px 0 6px; color: var(--pri); break-after: avoid; }
+  p { margin: 6px 0; }
+  section { break-before: page; }
+  section.continua { break-before: auto; margin-top: 26px; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.5pt; break-inside: auto; }
+  tr { break-inside: avoid; }
+  th { background: var(--osc); color: #fff; text-align: left; padding: 6px 8px; font-weight: 600; }
+  td { padding: 6px 8px; border-bottom: 1px solid var(--borde); vertical-align: top; }
+  tr:nth-child(even) td { background: #FBFCFE; }
+  code, .mono { font-family: Consolas, "Courier New", monospace; font-size: 9pt; background: #F1F5F9; padding: 1px 4px; border-radius: 3px; }
+  pre { font-family: Consolas, monospace; font-size: 8.8pt; background: #0F172A; color: #E2E8F0; padding: 10px 12px; border-radius: 6px; line-height: 1.4; white-space: pre-wrap; break-inside: avoid; }
+  .chk { display: inline-block; min-width: 22px; height: 22px; border-radius: 50%; background: var(--ok); color: #fff; text-align: center; font-weight: 700; line-height: 22px; font-size: 12pt; }
+  .warn { display: inline-block; min-width: 22px; height: 22px; border-radius: 50%; background: var(--av); color: #fff; text-align: center; font-weight: 700; line-height: 22px; font-size: 11pt; }
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 8.5pt; font-weight: 600; }
+  .tag.ok { background: var(--okf); color: var(--ok); } .tag.av { background: var(--avf); color: var(--av); } .tag.mal { background: var(--malf); color: var(--mal); }
+  .caja { border: 1px solid var(--borde); border-left: 5px solid var(--pri); background: var(--fondo); padding: 10px 14px; border-radius: 6px; margin: 10px 0; break-inside: avoid; }
+  .caja.verde { border-left-color: var(--ok); background: var(--okf); }
+  .caja.ambar { border-left-color: var(--av); background: var(--avf); }
+  .caja b.t { display: block; margin-bottom: 3px; }
+  .pasos { counter-reset: p; list-style: none; padding: 0; margin: 6px 0; }
+  .pasos > li { counter-increment: p; position: relative; padding: 4px 0 6px 34px; }
+  .pasos > li::before { content: counter(p); position: absolute; left: 0; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--pri); color: #fff; font-weight: 700; text-align: center; line-height: 24px; font-size: 10pt; }
+  .flujo { display: flex; flex-direction: column; align-items: stretch; gap: 0; margin: 10px 0; break-inside: avoid; }
+  .capa { border: 2px solid var(--osc); border-radius: 8px; padding: 8px 12px; background: #fff; }
+  .capa b { color: var(--pri); }
+  .flecha { text-align: center; color: var(--suave); font-size: 14pt; line-height: 1.1; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grande { font-size: 22pt; font-weight: 700; color: var(--pri); }
+
+  /* Portada */
+  .portada { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; }
+  .banda { background: var(--osc); color: #fff; padding: 28px 30px; border-radius: 10px; }
+  .banda .logo { display: inline-block; width: 52px; height: 52px; border-radius: 10px; background: #fff; color: var(--pri); font-weight: 800; font-size: 20pt; text-align: center; line-height: 52px; margin-bottom: 14px; }
+  .banda h1 { color: #fff; font-size: 28pt; margin: 0 0 6px; }
+  .banda p { color: #CBD5E1; font-size: 12pt; margin: 0; }
+  .resumen-portada { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 22px; }
+  .kpi { border: 1px solid var(--borde); border-top: 4px solid var(--pri); border-radius: 8px; padding: 10px 12px; }
+  .kpi .n { font-size: 20pt; font-weight: 700; } .kpi .l { font-size: 9pt; color: var(--suave); text-transform: uppercase; letter-spacing: .04em; }
+  .indice { columns: 2; font-size: 10.5pt; margin-top: 18px; }
+  .indice li { margin-bottom: 3px; }
+  .pie-portada { font-size: 9pt; color: var(--suave); border-top: 1px solid var(--borde); padding-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ======================= PORTADA ======================= -->
+<div class="portada">
+  <div>
+    <div class="banda">
+      <div class="logo">SP</div>
+      <h1>Sistema de Inventario Santa Patricia</h1>
+      <p>Panadería · Pastelería · Cafetería · Minimarket — Sprint 1 (HU01 y HU02)</p>
+      <p style="margin-top:10px">Documento del proyecto: qué hace, cómo se instala, cómo se usa y qué cumple</p>
+    </div>
+
+    <div class="resumen-portada">
+      <div class="kpi"><div class="l">Historias</div><div class="n">2 / 2</div><div class="l">completadas</div></div>
+      <div class="kpi"><div class="l">Subtareas</div><div class="n">21</div><div class="l">revisadas</div></div>
+      <div class="kpi"><div class="l">Pruebas</div><div class="n">18 / 18</div><div class="l">pasan</div></div>
+      <div class="kpi"><div class="l">Datos</div><div class="n">51</div><div class="l">productos · 6 usuarios</div></div>
+    </div>
+
+    <h3 style="margin-top:26px">Contenido</h3>
+    <ol class="indice">
+      <li>Qué es y qué hace el sistema</li>
+      <li>Estructura y arquitectura</li>
+      <li>Base de datos: tablas y campos</li>
+      <li>Cómo leer la pantalla del inventario</li>
+      <li>Formulario «Nuevo producto» y «¿Cómo llega?»</li>
+      <li>HU01 · Acceso y roles: subtareas y por qué cumple</li>
+      <li>HU02 · Registrar insumo: subtareas y por qué cumple</li>
+      <li>La regla del profesor: nada se toca a mano en la base</li>
+      <li>Instalación en la PC de cada compañero</li>
+      <li>Usuarios de prueba</li>
+      <li>Avance del proyecto</li>
+      <li>Pendientes y observaciones (incluye «assets»)</li>
+      <li>Preguntas frecuentes</li>
+    </ol>
+  </div>
+  <div class="pie-portada">
+    Proyecto Tecnológico · ISIL · Lima, 2026 — Carpeta del proyecto: <span class="mono">C:\Proyecto\SantaPatricia</span> ·
+    Base de datos: <span class="mono">santapatricia_db</span> · Fecha: 11/10/2026
+  </div>
+</div>
+
+<!-- ======================= 1 ======================= -->
+<section>
+  <h2>1. Qué es y qué hace el sistema</h2>
+  <p>Es una aplicación web para controlar el <b>catálogo de insumos y productos</b> de Santa Patricia.
+     En este Sprint 1 permite:</p>
+  <table>
+    <tr><th style="width:28%">Función</th><th>Qué hace</th></tr>
+    <tr><td><b>Iniciar sesión (HU01)</b></td><td>Cada trabajador entra con su correo y contraseña. Según su <b>rol</b> (Administrador, Encargado de Producción, Cajero o Almacenero) puede hacer más o menos cosas.</td></tr>
+    <tr><td><b>Seguridad</b></td><td>Si alguien se equivoca de contraseña 5 veces seguidas, la cuenta se bloquea 15 minutos. Sin iniciar sesión no se puede ver nada.</td></tr>
+    <tr><td><b>Ver el inventario</b></td><td>Tabla con todos los productos: código, nombre, área, stock, precio, vencimiento y estado (Óptimo, Bajo o Crítico). Tarjetas con el resumen.</td></tr>
+    <tr><td><b>Buscar y filtrar</b></td><td>Buscador por nombre o código (encuentra «azúcar» aunque se escriba sin tilde) y botones para ver solo un área (Cocina, Panadería, Pastelería, Cafetería, Minimarket).</td></tr>
+    <tr><td><b>Registrar productos (HU02)</b></td><td>Solo el Administrador. Formulario con nombre, área, unidad, stock, stock mínimo, precio y vencimiento. El <b>código se genera solo</b> (Azúcar → AZU-001). El sistema calcula el stock si llega en sacos o cajas.</td></tr>
+    <tr><td><b>Eliminar productos</b></td><td>Solo el Administrador. El producto deja de aparecer, pero <b>no se borra</b> de la base (se guarda el historial).</td></tr>
+  </table>
+
+  <div class="caja verde"><b class="t">¿Cómo se abre?</b>
+    En NetBeans se abre la carpeta <span class="mono">backend</span> y se pulsa <b>Run</b>. Se abre solo el navegador
+    en el login: <span class="mono">http://localhost:8087/santapatricia/</span>. No hace falta usar la terminal.
+  </div>
+</section>
+
+<!-- ======================= 2 ======================= -->
+<section>
+  <h2>2. Estructura y arquitectura</h2>
+  <p>Sigue el esquema del documento del curso (puntos 1, 2 y 3): <b>React → API REST con JSON → Java con Servlets → MySQL</b>.</p>
+
+  <div class="flujo">
+    <div class="capa"><b>FRONTEND · React</b> (carpeta <span class="mono">frontend/</span>) — pantallas: login, inventario, formulario. Hecho por el equipo de front.</div>
+    <div class="flecha">▼ &nbsp;petición HTTP con JSON (GET, POST, PUT, DELETE) + token</div>
+    <div class="capa"><b>SERVLET</b> (<span class="mono">servlet/</span>) — recibe la petición y responde. No tiene reglas de negocio.</div>
+    <div class="flecha">▼</div>
+    <div class="capa"><b>SERVICE / SERVICEIMPL</b> (<span class="mono">service/</span>) — reglas del negocio: validar datos, generar el código, bloquear tras 5 intentos.</div>
+    <div class="flecha">▼</div>
+    <div class="capa"><b>DAO / DAOIMPL</b> (<span class="mono">dao/</span>) — el único lugar donde hay SQL. Usa JDBC.</div>
+    <div class="flecha">▼</div>
+    <div class="capa"><b>MySQL · santapatricia_db</b> (<span class="mono">database/</span>) — tablas, relaciones y claves.</div>
+  </div>
+
+  <h3>Carpetas del proyecto</h3>
+<pre>SantaPatricia/
+├── frontend/                 React + TypeScript + Tailwind (VS Code)
+│   └── src/  pages/ components/ services/ (llamadas a la API) types/
+├── backend/                  Proyecto Maven (NetBeans) → GlassFish 8
+│   ├── src/main/java/pe/edu/isil/santapatricia/
+│   │   ├── model/            Usuario, Producto, Categoria (representan las tablas)
+│   │   ├── dto/              JSON que entra y sale (LoginRequest, ProductoDTO…)
+│   │   ├── servlet/          AuthServlet, ProductoServlet, CatalogoServlet, SaludServlet
+│   │   ├── service/ + impl/  AuthServiceImpl, ProductoServiceImpl (reglas)
+│   │   ├── dao/ + impl/      UsuarioDAOImpl, ProductoDAOImpl, CategoriaDAOImpl (SQL)
+│   │   └── config/           conexión MySQL, JSON, token JWT, filtros de seguridad y CORS
+│   ├── src/main/resources/config.properties   ← contraseña de MySQL de cada uno
+│   └── src/main/webapp/app/  ← el React ya compilado (por eso Run abre todo)
+├── database/
+│   ├── esquema.sql           crea la base y las 4 tablas
+│   └── datos_prueba.sql      6 usuarios, 5 áreas y 51 productos
+└── README.md</pre>
+
+  <h3>Tecnologías</h3>
+  <table>
+    <tr><th>Parte</th><th>Tecnología</th><th>Para qué</th></tr>
+    <tr><td>IDE</td><td>NetBeans + VS Code</td><td>Backend en NetBeans; diseño del front en VS Code</td></tr>
+    <tr><td>Frontend</td><td>React, TypeScript, Tailwind, Axios</td><td>Pantallas y llamadas a la API</td></tr>
+    <tr><td>Backend</td><td>Java 21, Servlets (Jakarta EE 11)</td><td>Recibir peticiones y aplicar reglas</td></tr>
+    <tr><td>Acceso a datos</td><td>JDBC</td><td>SQL directo, fácil de entender</td></tr>
+    <tr><td>Servidor</td><td>GlassFish 8</td><td>Ejecuta el backend y entrega el front</td></tr>
+    <tr><td>Base de datos</td><td>MySQL 8</td><td>Guardar la información</td></tr>
+    <tr><td>Sesión</td><td>JWT (token)</td><td>Saber quién hace cada petición y con qué rol</td></tr>
+    <tr><td>Pruebas</td><td>JUnit</td><td>18 pruebas automáticas</td></tr>
+    <tr><td>Gestión</td><td>Maven, Git, Jira</td><td>Dependencias, versiones y tareas</td></tr>
+  </table>
+</section>
+
+<!-- ======================= 3 ======================= -->
+<section>
+  <h2>3. Base de datos: tablas y campos</h2>
+  <p>Base <span class="mono">santapatricia_db</span>, 4 tablas. Los campos marcados <span class="tag ok">nuevo</span> no existían en la versión anterior del proyecto.</p>
+
+  <h3>Tabla <span class="mono">productos</span> (el catálogo, HU02)</h3>
+  <table>
+    <tr><th style="width:21%">Campo</th><th style="width:16%">Tipo</th><th>Para qué sirve</th></tr>
+    <tr><td><span class="mono">id</span></td><td>número</td><td>Número interno que pone MySQL solo. No lo ve el usuario.</td></tr>
+    <tr><td><span class="mono">sku</span> <span class="tag ok">nuevo</span></td><td>texto (20)</td><td><b>Código del producto</b>. Lo genera el sistema: 3 primeras letras del nombre + número. «Azúcar rubia» → <b>AZU-002</b>. No se repite.</td></tr>
+    <tr><td><span class="mono">nombre</span></td><td>texto (100)</td><td>Nombre del producto. No se puede repetir (sin importar mayúsculas).</td></tr>
+    <tr><td><span class="mono">categoria_id</span></td><td>número</td><td>El <b>área</b> a la que pertenece (enlace a la tabla categorias).</td></tr>
+    <tr><td><span class="mono">unidad_medida</span></td><td>KG, G, L, ML, UND, PAQ</td><td>Cómo se cuenta ese producto: kilos, gramos, litros, mililitros, unidades o paquetes.</td></tr>
+    <tr><td><span class="mono">stock_actual</span> <span class="tag ok">nuevo</span></td><td>decimal</td><td><b>Cuánto hay ahora</b> en el almacén, en la unidad de medida.</td></tr>
+    <tr><td><span class="mono">stock_minimo</span></td><td>decimal</td><td><b>Cuánto debería haber como mínimo</b>. Si el stock baja de aquí, hay que comprar.</td></tr>
+    <tr><td><span class="mono">precio_unitario</span> <span class="tag ok">nuevo</span></td><td>decimal</td><td>Precio en soles <b>por unidad de medida</b> (por KG, por L…), no por saco.</td></tr>
+    <tr><td><span class="mono">fecha_vencimiento</span> <span class="tag ok">nuevo</span></td><td>fecha</td><td>Cuándo vence. Vacío = no vence (bolsas, vasos, detergente).</td></tr>
+    <tr><td><span class="mono">activo</span></td><td>sí / no</td><td>«No» = eliminado. El producto no se borra, solo se oculta.</td></tr>
+    <tr><td><span class="mono">creado_en</span>, <span class="mono">actualizado_en</span></td><td>fecha y hora</td><td>Cuándo se registró y cuándo cambió por última vez (los pone MySQL solo).</td></tr>
+  </table>
+  <div class="caja"><b class="t">El «estado» no se guarda</b>
+    Óptimo / Bajo / Crítico <b>se calcula</b> cada vez comparando el stock actual con el mínimo (ver sección 4).
+    Así nunca queda desactualizado.
+  </div>
+
+  <h3>Tabla <span class="mono">usuarios</span> (HU01)</h3>
+  <table>
+    <tr><th style="width:21%">Campo</th><th>Para qué sirve</th></tr>
+    <tr><td><span class="mono">nombre</span>, <span class="mono">correo</span></td><td>Datos del trabajador. El correo es único y es con lo que inicia sesión.</td></tr>
+    <tr><td><span class="mono">password</span></td><td>Contraseña. <b>Por decisión del equipo se guarda visible</b> para entenderla y probarla (ver sección 12).</td></tr>
+    <tr><td><span class="mono">rol_id</span></td><td>Su rol (enlace a la tabla roles).</td></tr>
+    <tr><td><span class="mono">activo</span></td><td>«No» = dado de baja: no puede entrar.</td></tr>
+    <tr><td><span class="mono">intentos_fallidos</span></td><td>Cuántas contraseñas incorrectas seguidas lleva. Vuelve a 0 al entrar bien.</td></tr>
+    <tr><td><span class="mono">bloqueado_hasta</span></td><td>Si tiene una hora, la cuenta está bloqueada hasta esa hora (5 fallos → 15 minutos).</td></tr>
+    <tr><td><span class="mono">ultimo_acceso</span></td><td>Última vez que entró correctamente.</td></tr>
+  </table>
+
+  <h3>Tablas <span class="mono">roles</span> y <span class="mono">categorias</span></h3>
+  <div class="grid2">
+    <table>
+      <tr><th>roles (código)</th><th>Se muestra como</th></tr>
+      <tr><td class="mono">ADMINISTRADOR</td><td>Administrador</td></tr>
+      <tr><td class="mono">ENCARGADO_PRODUCCION</td><td>Encargado de Producción</td></tr>
+      <tr><td class="mono">CAJERO</td><td>Cajero</td></tr>
+      <tr><td class="mono">ALMACENERO</td><td>Almacenero</td></tr>
+    </table>
+    <table>
+      <tr><th>categorias (código)</th><th>Área</th></tr>
+      <tr><td class="mono">COCINA</td><td>Cocina</td></tr>
+      <tr><td class="mono">PANADERIA</td><td>Panadería</td></tr>
+      <tr><td class="mono">PASTELERIA</td><td>Pastelería</td></tr>
+      <tr><td class="mono">CAFETERIA</td><td>Cafetería</td></tr>
+      <tr><td class="mono">MINIMARKET</td><td>Minimarket</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ======================= 4 ======================= -->
+<section>
+  <h2>4. Cómo leer la pantalla del inventario</h2>
+
+  <h3>¿Qué significa «45 / mín. 20 L»?</h3>
+  <div class="caja">
+    <span class="grande">45</span> <span style="color:var(--suave)">/ mín. 20 L</span>
+    <p><b>45</b> = <b>stock actual</b>: hay 45 litros de ese producto ahora en el almacén.<br>
+       <b>mín. 20</b> = <b>stock mínimo</b>: lo que siempre debería haber; si baja de 20, hay que comprar.<br>
+       <b>L</b> = la <b>unidad de medida</b> del producto (litros).</p>
+    <p>Ejemplo real de la base: <b>Aceite vegetal → 45 / mín. 20 L</b>: hay 45 litros y el mínimo es 20, está bien abastecido.</p>
+  </div>
+
+  <h3>El estado del stock (semáforo)</h3>
+  <table>
+    <tr><th style="width:16%">Estado</th><th style="width:34%">Regla</th><th>Ejemplo (mínimo = 20)</th></tr>
+    <tr><td><span class="tag ok">Óptimo</span></td><td>El stock es <b>mayor</b> que el mínimo</td><td>Hay 45 → 45 &gt; 20 → <b>Óptimo</b></td></tr>
+    <tr><td><span class="tag av">Stock bajo</span></td><td>El stock es <b>igual o menor</b> que el mínimo</td><td>Hay 15 → 15 ≤ 20 → <b>Bajo</b>: conviene comprar pronto</td></tr>
+    <tr><td><span class="tag mal">Crítico</span></td><td>El stock es <b>la mitad del mínimo o menos</b></td><td>Hay 8 → 8 ≤ 10 (mitad de 20) → <b>Crítico</b>: comprar ya</td></tr>
+  </table>
+
+  <h3>Las otras columnas</h3>
+  <table>
+    <tr><th style="width:22%">Columna</th><th>Qué muestra</th></tr>
+    <tr><td>SKU</td><td>El código automático del producto (ej. <span class="mono">ACE-001</span>).</td></tr>
+    <tr><td>Precio</td><td>«S/ 9.90 / L» = cada litro cuesta 9.90 soles.</td></tr>
+    <tr><td>Vencimiento</td><td>Fecha en día/mes/año. «—» = no vence.</td></tr>
+    <tr><td>Tarjetas de arriba</td><td>Total de productos, cuántos están Óptimos, en Stock bajo y Críticos. Siempre suman el total.</td></tr>
+    <tr><td>Botones de área</td><td>«Pastelería (14)» = hay 14 productos de pastelería; al pulsarlo solo se ven esos.</td></tr>
+    <tr><td>Buscador (arriba)</td><td>Busca por nombre o código mientras escribes.</td></tr>
+    <tr><td>Papelera</td><td>Eliminar. Solo la ve el Administrador.</td></tr>
+  </table>
+</section>
+
+<!-- ======================= 5 ======================= -->
+<section>
+  <h2>5. Formulario «Nuevo producto» y «¿Cómo llega?»</h2>
+  <p>Solo el <b>Administrador</b> ve el botón <b>Nuevo producto</b>. Los campos con * son obligatorios.</p>
+  <table>
+    <tr><th style="width:24%">Campo</th><th>Qué se escribe</th></tr>
+    <tr><td>Nombre *</td><td>Qué producto es. Ej.: «Azúcar rubia». Debajo aparece el <b>código que se asignará</b> (AZU-005).</td></tr>
+    <tr><td>Área *</td><td>Cocina, Panadería, Pastelería, Cafetería o Minimarket.</td></tr>
+    <tr><td>Unidad de medida *</td><td>En qué se va a <b>contar</b> el stock: KG, G, L, ML, UND (unidad) o PAQ (paquete).</td></tr>
+    <tr><td>¿Cómo llega? (opcional)</td><td>Calculadora para cuando la mercadería llega en envases (ver abajo).</td></tr>
+    <tr><td>Stock que entra *</td><td>La cantidad total que entra, en la unidad elegida. Se llena sola si usas «¿Cómo llega?».</td></tr>
+    <tr><td>Stock mínimo *</td><td>Debajo de esta cantidad el producto se marca como Bajo o Crítico.</td></tr>
+    <tr><td>Precio (S/) *</td><td>Precio <b>por unidad de medida</b>: por KG, por L, por UND… (no por saco).</td></tr>
+    <tr><td>Vencimiento</td><td>Fecha de vencimiento. Vacío = no vence.</td></tr>
+  </table>
+
+  <h3>«¿Cómo llega?» explicado</h3>
+  <div class="caja">
+    <p style="font-size:12pt"><b>[ cantidad de envases ]</b> sacos / cajas / paquetes de <b>[ contenido de cada envase ]</b> <b>[unidad]</b> = <b>stock que entra</b></p>
+    <p><b>Primer número</b> = <b>cuántos envases llegaron</b> (sacos, cajas, jabas, paquetes…).<br>
+       <b>Segundo número</b> = <b>cuánto trae cada envase</b>, medido en la unidad elegida.<br>
+       El sistema los <b>multiplica</b> y llena «Stock que entra».</p>
+  </div>
+  <table>
+    <tr><th>Llega a la panadería…</th><th>Unidad elegida</th><th>Se escribe</th><th>Stock que entra</th></tr>
+    <tr><td>10 sacos de azúcar de 10 kg</td><td>KG</td><td>10 sacos de 10</td><td><b>100 KG</b></td></tr>
+    <tr><td>5 sacos de harina de 50 kg</td><td>KG</td><td>5 sacos de 50</td><td><b>250 KG</b></td></tr>
+    <tr><td>3 jabas de huevos de 30</td><td>UND</td><td>3 jabas de 30</td><td><b>90 UND</b></td></tr>
+    <tr><td>2 cajas de leche con 12 litros</td><td>L</td><td>2 cajas de 12</td><td><b>24 L</b></td></tr>
+    <tr><td>4 cajas de 500 g de polvo de hornear</td><td>G</td><td>4 cajas de 500</td><td><b>2000 G</b></td></tr>
+  </table>
+  <div class="caja ambar"><b class="t">Importante</b>
+    «¿Cómo llega?» <b>solo es una calculadora</b>: en la base se guarda únicamente el total (100 KG), no los sacos.
+    Si la mercadería no llega en envases, se deja vacío y se escribe directo el stock que entra.
+    El precio siempre es por la unidad (por KG), no por el saco.
+  </div>
+
+  <h3>Qué pasa al pulsar Guardar</h3>
+  <ol class="pasos">
+    <li>React envía los datos al backend (<span class="mono">POST /api/inventario/productos</span>) con el token del usuario.</li>
+    <li>El backend revisa que el usuario sea <b>Administrador</b>; si no, responde «Su rol no tiene permiso».</li>
+    <li>Revisa cada campo: vacíos, negativos, unidad o área inexistente. Si algo falla, el mensaje aparece <b>debajo de cada casilla</b>.</li>
+    <li>Revisa que el nombre no exista ya («Ya existe un producto llamado…»).</li>
+    <li>Genera el código (AZU-005), guarda en MySQL y devuelve el producto.</li>
+    <li>La pantalla muestra un aviso verde y el producto <b>resaltado en verde</b> en la lista.</li>
+  </ol>
+</section>
+
+<!-- ======================= 6 HU01 ======================= -->
+<section>
+  <h2>6. HU01 · Control de acceso y autenticación por roles (SISPS-2)</h2>
+  <div class="caja"><b class="t">Criterio de aceptación (Jira)</b>
+    Dado que ingreso credenciales válidas de un usuario «Cajero/Almacenero», cuando el sistema valide la autenticación y
+    genere el token (JWT), entonces se debe redirigir a la vista de inventario restringiendo el acceso a configuraciones
+    de usuarios o edición de parámetros del negocio.
+  </div>
+  <p><span class="chk">✓</span> <b>Cumple el criterio:</b> el cajero inicia sesión, recibe su token, entra al Inventario Central y <b>no ve</b>
+     el botón de registrar ni el de eliminar, y ve un aviso de que su rol solo puede consultar. Si intenta registrar
+     directamente por la API, el backend responde <b>403 (sin permiso)</b>.</p>
+
+  <table>
+    <tr><th style="width:4%"></th><th style="width:27%">Subtarea</th><th style="width:36%">Por qué cumple</th><th>Cómo funciona / cómo se comprueba</th></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-13</b> Crear BD y tabla de usuarios con usuarios de prueba</td><td>Existen las tablas <span class="mono">roles</span> y <span class="mono">usuarios</span> con 6 usuarios de prueba.</td><td>Ejecutar <span class="mono">esquema.sql</span> y <span class="mono">datos_prueba.sql</span>; al final muestran los usuarios.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-14</b> Clase de conexión (JDBC a MySQL)</td><td><span class="mono">ConexionBD</span> abre conexiones JDBC; los datos salen de <span class="mono">config.properties</span>, no están escritos en el código.</td><td>La página <span class="mono">estado.html</span> muestra «conectada a santapatricia_db».</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-15</b> Modelo Usuario y Rol</td><td>Clase <span class="mono">Usuario</span> con su rol (código y nombre) y los 4 roles de Jira.</td><td>El login devuelve el rol: ADMINISTRADOR, CAJERO…</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-16</b> DAO: buscar por correo, registrar intento fallido y acceso</td><td><span class="mono">UsuarioDAOImpl</span>: <span class="mono">buscarPorCorreo</span>, <span class="mono">registrarIntentoFallido</span>, <span class="mono">registrarAccesoExitoso</span>.</td><td>Tras un fallo, <span class="mono">intentos_fallidos</span> sube; al entrar bien vuelve a 0 y se guarda <span class="mono">ultimo_acceso</span>.</td></tr>
+    <tr><td><span class="warn">!</span></td><td><b>SISPS-17</b> AuthService: validar credenciales con BCrypt y bloqueo tras 5 intentos</td><td>Valida credenciales y bloquea tras 5 intentos <span class="chk" style="min-width:16px;height:16px;line-height:16px;font-size:9pt">✓</span>.
+      <b>BCrypt no se usa</b>: el equipo decidió guardar las contraseñas visibles para entenderlas.</td><td>Prueba automática «5 contraseñas incorrectas bloquean la cuenta». Ver sección 12 sobre las contraseñas.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-18</b> Login y Logout con redirección por rol</td><td><span class="mono">POST /api/auth/login</span> entrega el token y el rol; React redirige al inventario. Cerrar sesión borra el token.</td><td>Entrar con cualquiera de los usuarios; el ícono de salida vuelve al login.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-19</b> Filtro que protege las rutas</td><td><span class="mono">SeguridadFilter</span> revisa el token en toda la API; sin token, o con uno falso o vencido → 401.</td><td>Entrar a <span class="mono">/api/inventario/productos</span> sin iniciar sesión → «Su sesión expiró o no ha iniciado sesión».</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-20</b> Vistas: login, panel, inventario, acceso denegado</td><td>Pantallas en React (equipo de front): login e Inventario Central; aviso para roles sin permiso.</td><td>Se abren con Run en NetBeans.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-21</b> Que el bloqueo no deje al admin sin acceso</td><td>El bloqueo es <b>temporal (15 min)</b> y no da de baja la cuenta.</td><td>Prueba automática: tras el bloqueo la cuenta sigue activa.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-22</b> Pruebas JUnit de AuthService</td><td><b>7 pruebas</b> en <span class="mono">AuthServiceImplTest</span>, todas pasan.</td><td>NetBeans → clic derecho en backend → Test.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-23</b> Criterio de aceptación con JWT</td><td>La sesión usa token JWT, como dice el criterio, para que React pueda conectarse.</td><td>El login devuelve <span class="mono">{ token, usuario }</span>.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-33</b> CORS para que React consuma la API</td><td><span class="mono">CorsFilter</span> permite el modo diseño (localhost:5173).</td><td><span class="mono">npm run dev</span> en VS Code se conecta sin errores.</td></tr>
+  </table>
+</section>
+
+<!-- ======================= 7 HU02 ======================= -->
+<section>
+  <h2>7. HU02 · Registrar insumo base (SISPS-3)</h2>
+  <div class="caja"><b class="t">Criterio de aceptación (Jira)</b>
+    Dado que me encuentro autenticado en el módulo de catálogo, cuando complete los campos (Nombre «Harina Especial»,
+    Categoría, Unidad «Kg», Stock mínimo «50») y presione «Guardar», entonces el sistema debe almacenar el registro, validar
+    que el código no esté duplicado y reflejar el nuevo elemento en la lista general de productos.
+  </div>
+  <p><span class="chk">✓</span> <b>Cumple el criterio:</b> el administrador completa el formulario, pulsa Guardar, el producto se guarda en
+     MySQL, el código se genera solo y nunca se repite, y el producto aparece <b>resaltado</b> en la lista. Si el nombre
+     ya existe o falta un dato, el sistema lo indica.</p>
+
+  <table>
+    <tr><th style="width:4%"></th><th style="width:27%">Subtarea</th><th style="width:36%">Por qué cumple</th><th>Cómo funciona / cómo se comprueba</th></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-24</b> Tabla con código único, nombre, categoría, unidad, stock mínimo y stock actual</td><td>Tabla <span class="mono">productos</span> con todos esos campos; <span class="mono">sku</span> y <span class="mono">nombre</span> son únicos.</td><td>Ver sección 3. MySQL rechaza códigos repetidos.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-25</b> Modelo Producto y Categoría</td><td>Clases <span class="mono">Producto</span> y <span class="mono">Categoria</span>; las áreas están en una tabla (se pueden agregar sin programar).</td><td>Las 5 áreas aparecen en el formulario y en los filtros.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-26</b> DAO: insertar, listar, buscar por código</td><td><span class="mono">ProductoDAOImpl</span>: <span class="mono">insertar</span>, <span class="mono">listarActivos</span>, <span class="mono">existeSku</span> y <span class="mono">ultimoNumeroSku</span> (para generar el siguiente código).</td><td>La búsqueda por código se hace en la pantalla, con el buscador.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-27</b> Servicio: validar campos obligatorios y código duplicado</td><td><span class="mono">ProductoServiceImpl</span> revisa cada campo y el nombre repetido; el código nunca se repite porque se genera con el siguiente número libre.</td><td>Guardar vacío → 6 mensajes, uno por casilla. Nombre repetido → aviso.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-28</b> Servlet: mostrar formulario, guardar y listar</td><td><span class="mono">ProductoServlet</span> (listar, guardar, ver, editar, eliminar) y <span class="mono">CatalogoServlet</span> (opciones del formulario).</td><td>Ver la tabla de la API en el README.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-29</b> Vista: formulario de registro y tabla del catálogo</td><td>Formulario «Nuevo producto» (estaba pendiente en el front) y tabla con precio, vencimiento y estado.</td><td>Entrar como admin → Nuevo producto.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-30</b> Restringir el registro al Administrador</td><td>El backend responde 403 a los otros roles y la pantalla les oculta el botón.</td><td>Entrar como <span class="mono">caja@…</span>: no aparece el botón.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-31</b> Datos de prueba reales de Santa Patricia</td><td>51 productos: harinas, levaduras, azúcares, lácteos, café, empaques… en las 5 áreas.</td><td>Ejecutar <span class="mono">datos_prueba.sql</span>.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td><b>SISPS-32</b> Pruebas: código duplicado y campos vacíos</td><td><b>11 pruebas</b> en <span class="mono">ProductoServiceImplTest</span>: código automático, campos vacíos, datos inválidos, nombre y código repetidos.</td><td>NetBeans → Test. Las 18 pasan.</td></tr>
+  </table>
+</section>
+
+<!-- ======================= 8 LEY ======================= -->
+<section>
+  <h2>8. La regla del profesor: nada se toca a mano en la base</h2>
+  <p>La regla es que las entradas, salidas y cualquier dato <b>no se escriban directamente en MySQL</b>, sino siempre a través del sistema.
+     Este proyecto la cumple así:</p>
+  <table>
+    <tr><th style="width:4%"></th><th style="width:32%">Cómo se cumple</th><th>Explicación</th></tr>
+    <tr><td><span class="chk">✓</span></td><td>Todo dato nuevo entra por la pantalla</td><td>El usuario registra productos en el formulario; nadie necesita abrir Workbench para agregar o cambiar datos.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td>Un solo camino hacia la base</td><td>React → Servlet → Service → DAO → MySQL. <b>El único código que escribe SQL es el DAO</b>; las pantallas nunca tocan la base.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td>Reglas antes de guardar</td><td>El Service valida cada dato (vacíos, negativos, repetidos) <b>antes</b> de que llegue a MySQL. Un dato mal escrito no se guarda.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td>Solo quien tiene permiso</td><td>Solo el Administrador registra o elimina, y el backend lo verifica con el token en cada petición.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td>Nada se borra</td><td>Eliminar = desactivar (<span class="mono">activo = 0</span>). La información queda para el historial y las auditorías.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td>Los scripts SQL son solo para instalar</td><td><span class="mono">esquema.sql</span> y <span class="mono">datos_prueba.sql</span> se usan <b>una vez</b>, para crear la base y cargar los datos iniciales. Después todo se hace desde el sistema.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td>Consultas protegidas</td><td>Se usa <span class="mono">PreparedStatement</span> con «?»: lo que escribe el usuario nunca se mezcla con el SQL (evita la inyección SQL).</td></tr>
+  </table>
+  <div class="caja ambar"><b class="t">A tener en cuenta para el Sprint 2</b>
+    En el Sprint 1 el stock se escribe al <b>registrar</b> el producto. Las entradas por compra (HU03) y las salidas por venta
+    o producción (HU04, HU05) aún no existen. Cuando se hagan, el stock debe cambiar <b>solo con movimientos registrados</b>
+    (con fecha, usuario y motivo, para el kárdex). Hoy la API permite editar un producto, incluido su stock
+    (<span class="mono">PUT</span>, solo Administrador, sin pantalla todavía). Conviene que en el Sprint 2 la edición ya no
+    cambie el stock y que este solo se mueva con entradas y salidas.
+  </div>
+</section>
+
+<!-- ======================= 9 INSTALACION ======================= -->
+<section>
+  <h2>9. Instalación en la PC de cada compañero</h2>
+  <h3>Qué necesita cada uno</h3>
+  <table>
+    <tr><th>Programa</th><th>Para qué</th><th>Nota</th></tr>
+    <tr><td>MySQL 8 + Workbench</td><td>Base de datos</td><td>Recordar la contraseña de su usuario root</td></tr>
+    <tr><td>Apache NetBeans</td><td>Abrir y ejecutar el backend</td><td>Trae Maven incluido</td></tr>
+    <tr><td>GlassFish 8 registrado en NetBeans</td><td>Servidor</td><td><i>Tools → Servers → Add Server → GlassFish Server</i></td></tr>
+    <tr><td>JDK 21</td><td>Java</td><td>JDK 25 también sirve</td></tr>
+    <tr><td>Node.js + VS Code</td><td>Solo para quien cambie el diseño del front</td><td>Para usar el sistema no hace falta</td></tr>
+  </table>
+
+  <h3>Pasos</h3>
+  <ol class="pasos">
+    <li><b>Copiar la carpeta</b> <span class="mono">SantaPatricia</span> (ZIP o GitHub) a una ruta sin espacios ni tildes, por ejemplo <span class="mono">C:\Proyecto\SantaPatricia</span>.</li>
+    <li><b>Crear la base:</b> en MySQL Workbench, <i>File → Open SQL Script</i> → <span class="mono">database\esquema.sql</span> → rayo ⚡. Luego lo mismo con <span class="mono">database\datos_prueba.sql</span>. Deben verse 6 usuarios y 51 productos.</li>
+    <li><b>Poner su contraseña de MySQL:</b> abrir <span class="mono">backend\src\main\resources\config.properties</span> y cambiar <span class="mono">db.password=root</span> por la suya.</li>
+    <li><b>Abrir en NetBeans:</b> <i>File → Open Project</i> → carpeta <span class="mono">backend</span> (ícono de mundo).</li>
+    <li><b>Pulsar Run ▶.</b> La primera vez tarda unos minutos (descarga librerías). Se abre el navegador en el login.</li>
+    <li><b>Entrar</b> con <span class="mono">admin@santapatricia.pe</span> / <span class="mono">Admin123</span>.</li>
+  </ol>
+
+  <div class="caja"><b class="t">Sobre el puerto</b>
+    En esta PC GlassFish usa el puerto <b>8087</b>. En otra PC puede ser <b>8080</b> (el normal de GlassFish). <b>No hay que
+    cambiar nada</b>: NetBeans abre la dirección correcta solo y el sistema funciona en cualquier puerto.
+  </div>
+
+  <h3>Si algo falla</h3>
+  <table>
+    <tr><th style="width:42%">Lo que aparece</th><th>Solución</th></tr>
+    <tr><td><span class="mono">estado.html</span> dice «base de datos SIN CONEXIÓN»</td><td>MySQL apagado, faltan los scripts del paso 2 o la contraseña del paso 3 no es la suya.</td></tr>
+    <tr><td>El login dice «No se pudo conectar con el servidor»</td><td>El backend no está corriendo: pulsar Run en NetBeans.</td></tr>
+    <tr><td>NetBeans pide elegir un servidor</td><td>Elegir GlassFish 8. Si no aparece, registrarlo (tabla de arriba).</td></tr>
+    <tr><td>NetBeans: <span class="mono">PKIX path building failed</span></td><td>Antivirus que revisa HTTPS (Norton). <i>Tools → Options → Java → Maven → Global Execution Options</i>: <span class="mono">-Djavax.net.ssl.trustStoreType=Windows-ROOT</span></td></tr>
+    <tr><td><span class="mono">localhost:5173</span> «rechazó la conexión»</td><td>Esa dirección es solo para el modo diseño (<span class="mono">npm run dev</span>). Para usar el sistema: Run en NetBeans.</td></tr>
+    <tr><td>Un usuario «no puede entrar» con la contraseña correcta</td><td>Se bloqueó por 5 intentos fallidos: esperar 15 minutos o volver a ejecutar los scripts del paso 2.</td></tr>
+  </table>
+
+  <h3>Para el equipo de front (cambiar el diseño)</h3>
+  <ol class="pasos">
+    <li>Abrir la carpeta <span class="mono">frontend</span> en VS Code → <i>Terminal → New Terminal</i>.</li>
+    <li><span class="mono">npm run dev</span> para ver los cambios en vivo (localhost:5173). El backend debe estar corriendo.</li>
+    <li>Al terminar: <span class="mono">npm run build</span>. Copia la versión final dentro del backend. Luego Run en NetBeans.</li>
+  </ol>
+</section>
+
+<!-- ======================= 10 USUARIOS ======================= -->
+<section>
+  <h2>10. Usuarios de prueba</h2>
+  <table>
+    <tr><th>Nombre</th><th>Correo</th><th>Contraseña</th><th>Rol</th><th>Puede</th></tr>
+    <tr><td>Valeria Ramos</td><td class="mono">admin@santapatricia.pe</td><td class="mono">Admin123</td><td>Administrador</td><td>Todo: ver, registrar, eliminar</td></tr>
+    <tr><td>Carlos Mendoza</td><td class="mono">produccion@santapatricia.pe</td><td class="mono">Prod123</td><td>Encargado de Producción</td><td>Ver inventario</td></tr>
+    <tr><td>Lucía Torres</td><td class="mono">caja@santapatricia.pe</td><td class="mono">Caja123</td><td>Cajero</td><td>Ver inventario</td></tr>
+    <tr><td>Jorge Quispe</td><td class="mono">almacen@santapatricia.pe</td><td class="mono">Alma123</td><td>Almacenero</td><td>Ver inventario</td></tr>
+    <tr><td>Rosa Huamán</td><td class="mono">rosa.huaman@santapatricia.pe</td><td class="mono">Rosa123</td><td>Cajero</td><td>Ver inventario</td></tr>
+    <tr><td>Pedro Salas</td><td class="mono">pedro.salas@santapatricia.pe</td><td class="mono">Pedro123</td><td>Almacenero</td><td><b>Dado de baja</b>: no puede entrar</td></tr>
+  </table>
+  <p>La contraseña distingue mayúsculas: <span class="mono">Admin123</span> funciona y <span class="mono">admin123</span> no.</p>
+
+  <section class="continua">
+  <h2>11. Avance del proyecto</h2>
+  <table>
+    <tr><th style="width:4%"></th><th style="width:30%">Sprint / Historia</th><th>Estado</th></tr>
+    <tr><td><span class="chk">✓</span></td><td>Sprint 0 · Planificación y arquitectura</td><td>Documento del curso, Jira, estructura de carpetas según el PDF.</td></tr>
+    <tr><td><span class="chk">✓</span></td><td>Sprint 1 · HU01 Acceso y roles</td><td>Completa y probada (falta la validación del Product Owner en el Sprint Review).</td></tr>
+    <tr><td><span class="chk">✓</span></td><td>Sprint 1 · HU02 Registrar insumo</td><td>Completa y probada (falta la validación del Product Owner).</td></tr>
+    <tr><td><span class="warn">…</span></td><td>Sprint 2 · HU03 Entradas, HU04 Salidas, HU05 Producción</td><td>Por hacer. La base ya tiene stock actual para que estos movimientos lo sumen o resten.</td></tr>
+    <tr><td><span class="warn">…</span></td><td>Sprint 3 · HU06 Mermas, HU07 Alertas, HU08 Kárdex, HU09 Ajustes</td><td>Por hacer. El estado (Bajo/Crítico) ya sirve de base para las alertas.</td></tr>
+    <tr><td><span class="warn">…</span></td><td>Sprint 4 · HU10 Dashboard (solo Administrador)</td><td>Por hacer.</td></tr>
+  </table>
+  <p><b>Verificaciones hechas:</b> 18 pruebas automáticas; login correcto e incorrecto; usuario dado de baja; bloqueo;
+     sesión que se mantiene al recargar; registro con código automático; nombre repetido; formulario vacío; permisos del
+     cajero (sin botones y 403 en la API); eliminación lógica; buscador y filtros por área.</p>
+  </section>
+</section>
+
+<!-- ======================= 12 PENDIENTES ======================= -->
+<section>
+  <h2>12. Pendientes y observaciones</h2>
+
+  <h3>«Error» en la carpeta assets</h3>
+  <div class="caja ambar">
+    <p><b>Qué es:</b> NetBeans marca en rojo los archivos de <span class="mono">backend/src/main/webapp/app/assets</span>
+       (<span class="mono">index-….js</span> y <span class="mono">index-….css</span>).</p>
+    <p><b>Por qué pasa:</b> esos archivos <b>no se escriben a mano</b>: los genera <span class="mono">npm run build</span> con todo el
+       código de React comprimido en una sola línea, y con reglas modernas de CSS (Tailwind 4: <span class="mono">@property</span>,
+       <span class="mono">@layer</span>) que el revisor de NetBeans no conoce. NetBeans los revisa como si fueran código normal y los marca.</p>
+    <p><b>¿Hace algo malo?</b> <b>No.</b> En el navegador esos archivos cargan correctamente (sin errores en la consola) y el sistema funciona.</p>
+    <p><b>Cómo se corregirá (más adelante):</b> que NetBeans ignore esa carpeta (es código generado) o servir el front
+       compilado desde fuera de <span class="mono">src</span>. <b>No se tocó</b>, como se pidió.</p>
+  </div>
+
+  <h3>Otras observaciones</h3>
+  <table>
+    <tr><th style="width:30%">Tema</th><th>Detalle</th></tr>
+    <tr><td>Contraseñas visibles</td><td>Decisión del equipo para entender y probar. En un sistema real se guarda un <b>hash</b> (por ejemplo BCrypt): un texto que no se puede revertir, para que, si alguien roba la base, no pueda leer las contraseñas. Jira (SISPS-2 y SISPS-17) todavía menciona BCrypt: hay que actualizarlo o volver a BCrypt antes de entregar.</td></tr>
+    <tr><td>Clave del token en config.properties</td><td>Sirve para trabajar en las PC del equipo. En producción debería ir en una variable de entorno.</td></tr>
+    <tr><td>Editar productos</td><td>La API ya permite editar (solo Administrador), pero aún no hay pantalla. Ver la nota de la sección 8 sobre el stock.</td></tr>
+    <tr><td>Cambios del front</td><td>Después de cambiar el diseño hay que ejecutar <span class="mono">npm run build</span>; si no, Run muestra la versión anterior.</td></tr>
+    <tr><td>Bootstrap</td><td>El documento del curso menciona Bootstrap; el equipo de front usa Tailwind (cumple la misma función).</td></tr>
+  </table>
+</section>
+
+<!-- ======================= 13 FAQ ======================= -->
+<section>
+  <h2>13. Preguntas frecuentes</h2>
+  <table>
+    <tr><th style="width:36%">Pregunta</th><th>Respuesta</th></tr>
+    <tr><td>¿Qué significa «45 / mín. 20 L»?</td><td>Hay 45 litros (stock actual) y lo mínimo que debería haber son 20 litros. Ver sección 4.</td></tr>
+    <tr><td>¿Qué pongo en «¿Cómo llega?»?</td><td>Primer número: cuántos envases (sacos, cajas, jabas). Segundo: cuánto trae cada uno en la unidad elegida. El sistema multiplica. Es opcional.</td></tr>
+    <tr><td>¿Por qué no escribo el código del producto?</td><td>Lo genera el sistema con las 3 primeras letras del nombre + un número, para que siempre sea ordenado y nunca se repita.</td></tr>
+    <tr><td>¿Por qué el cajero no ve «Nuevo producto»?</td><td>Por HU01: solo el Administrador registra o elimina. Los demás roles consultan.</td></tr>
+    <tr><td>¿Por qué al eliminar no se borra de la base?</td><td>Para conservar el historial; en los próximos sprints las entradas, salidas y el kárdex harán referencia a esos productos.</td></tr>
+    <tr><td>¿El precio es por saco o por kilo?</td><td>Por la unidad de medida (por kilo si la unidad es KG).</td></tr>
+    <tr><td>¿Por qué el estado no se guarda?</td><td>Se calcula al momento comparando stock y mínimo; así nunca queda desactualizado.</td></tr>
+    <tr><td>¿Qué es el token (JWT)?</td><td>Un «pase» firmado que el backend entrega al iniciar sesión. React lo envía en cada petición; el backend sabe así quién es y qué rol tiene. Si alguien lo modifica, se rechaza.</td></tr>
+    <tr><td>¿Puedo volver a los datos iniciales?</td><td>Sí: ejecutar otra vez <span class="mono">esquema.sql</span> y <span class="mono">datos_prueba.sql</span>. Ojo: borra lo registrado.</td></tr>
+    <tr><td>¿Qué pasa si escribo mal la contraseña 5 veces?</td><td>La cuenta se bloquea 15 minutos. Es una medida de seguridad contra quien intenta adivinar contraseñas.</td></tr>
+  </table>
+</section>
+
+</body>
+</html>

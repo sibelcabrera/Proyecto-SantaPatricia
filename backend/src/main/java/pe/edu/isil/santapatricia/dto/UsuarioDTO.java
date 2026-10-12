@@ -9,16 +9,18 @@ public class UsuarioDTO {
     private int id;
     private String nombre;
     private String correo;
-    private String rol;   // ADMINISTRADOR, ENCARGADO_PRODUCCION, CAJERO o ALMACENERO
+    private String rol;      // ADMINISTRADOR, ENCARGADO_PRODUCCION, CAJERO o ALMACENERO
+    private TurnoDTO turno;  // turno elegido al iniciar sesión
 
     public UsuarioDTO() {
     }
 
-    public UsuarioDTO(int id, String nombre, String correo, String rol) {
+    public UsuarioDTO(int id, String nombre, String correo, String rol, TurnoDTO turno) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.rol = rol;
+        this.turno = turno;
     }
 
     public int getId() { return id; }
@@ -29,4 +31,6 @@ public class UsuarioDTO {
     public void setCorreo(String correo) { this.correo = correo; }
     public String getRol() { return rol; }
     public void setRol(String rol) { this.rol = rol; }
+    public TurnoDTO getTurno() { return turno; }
+    public void setTurno(TurnoDTO turno) { this.turno = turno; }
 }

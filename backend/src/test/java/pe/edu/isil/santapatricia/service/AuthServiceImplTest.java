@@ -7,14 +7,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import pe.edu.isil.santapatricia.dao.TurnoDAO;
 import pe.edu.isil.santapatricia.dao.UsuarioDAO;
 import pe.edu.isil.santapatricia.dto.LoginRequest;
 import pe.edu.isil.santapatricia.dto.LoginResponse;
+import pe.edu.isil.santapatricia.model.Turno;
 import pe.edu.isil.santapatricia.model.Usuario;
 import pe.edu.isil.santapatricia.service.impl.AuthServiceImpl;
 
@@ -22,6 +27,7 @@ import pe.edu.isil.santapatricia.service.impl.AuthServiceImpl;
 class AuthServiceImplTest {
 
     private UsuarioDAOEnMemoria usuarios;
+    private TurnoDAOEnMemoria turnos;
     private AuthServiceImpl servicio;
 
     @BeforeEach
@@ -30,7 +36,8 @@ class AuthServiceImplTest {
         usuarios.agregar(1, "Valeria Ramos", "admin@santapatricia.pe", "Admin123", "ADMINISTRADOR", true);
         usuarios.agregar(2, "Lucía Torres", "caja@santapatricia.pe", "Caja123", "CAJERO", true);
         usuarios.agregar(3, "Pedro Salas", "pedro.salas@santapatricia.pe", "Pedro123", "ALMACENERO", false);
-        servicio = new AuthServiceImpl(usuarios, 5, 15);
+        turnos = new TurnoDAOEnMemoria();
+        servicio = new AuthServiceImpl(usuarios, turnos, 5, 15);
     }
 
     @Test
@@ -97,12 +104,46 @@ class AuthServiceImplTest {
         assertFalse(usuarios.buscarPorId(1).estaBloqueado());
     }
 
+    @Test
+    @DisplayName("Turno: el login devuelve el turno elegido y deja registrado quién inició ese turno")
+    void loginRegistraTurno() {
+        LoginResponse r = servicio.login(login("caja@santapatricia.pe", "Caja123", "TARDE"));
+        assertEquals("TARDE", r.getUsuario().getTurno().getCodigo());
+        assertEquals("14:30", r.getUsuario().getTurno().getHoraInicio());
+        assertEquals(List.of("2-TARDE"), turnos.inicios);
+    }
+
+    @Test
+    @DisplayName("Turno: sin turno o con uno que no existe -> 400, y NO cuenta como intento fallido")
+    void turnoObligatorio() {
+        ServicioException sinTurno = assertThrows(ServicioException.class,
+                () -> servicio.login(login("admin@santapatricia.pe", "mala", "")));
+        ServicioException noExiste = assertThrows(ServicioException.class,
+                () -> servicio.login(login("admin@santapatricia.pe", "Admin123", "NOCHE")));
+        assertEquals(400, sinTurno.getEstadoHttp());
+        assertEquals(400, noExiste.getEstadoHttp());
+        assertEquals(0, usuarios.buscarPorId(1).getIntentosFallidos());
+        assertTrue(turnos.inicios.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Turno: un login fallido no registra inicio de turno")
+    void loginFallidoNoRegistraTurno() {
+        assertThrows(ServicioException.class, () -> servicio.login(login("admin@santapatricia.pe", "mala")));
+        assertTrue(turnos.inicios.isEmpty());
+    }
+
     // ---------- Ayudantes ----------
 
     private static LoginRequest login(String correo, String password) {
+        return login(correo, password, "MANANA");
+    }
+
+    private static LoginRequest login(String correo, String password, String turno) {
         LoginRequest r = new LoginRequest();
         r.setCorreo(correo);
         r.setPassword(password);
+        r.setTurno(turno);
         return r;
     }
 
@@ -140,6 +181,29 @@ class AuthServiceImplTest {
         public void registrarAccesoExitoso(int id) {
             porId.get(id).setIntentosFallidos(0);
             porId.get(id).setBloqueadoHasta(null);
+        }
+    }
+
+    /** Turnos de mentira: Mañana y Tarde. Guarda los inicios como "idUsuario-TURNO". */
+    static class TurnoDAOEnMemoria implements TurnoDAO {
+        private final List<Turno> lista = List.of(
+                new Turno(1, "MANANA", "Mañana", LocalTime.of(6, 0), LocalTime.of(14, 30)),
+                new Turno(2, "TARDE", "Tarde", LocalTime.of(14, 30), LocalTime.of(23, 0)));
+        final List<String> inicios = new ArrayList<>();
+
+        @Override
+        public List<Turno> listar() {
+            return lista;
+        }
+
+        @Override
+        public Turno buscarPorCodigo(String codigo) {
+            return lista.stream().filter(t -> t.getCodigo().equals(codigo)).findFirst().orElse(null);
+        }
+
+        @Override
+        public void registrarInicio(int usuarioId, int turnoId) {
+            inicios.add(usuarioId + "-" + lista.get(turnoId - 1).getCodigo());
         }
     }
 }

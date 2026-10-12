@@ -36,6 +36,7 @@ public final class JwtUtil {
                 .subject(usuario.getCorreo())                   // quién es
                 .claim("id", usuario.getId())
                 .claim("rol", usuario.getRol())                 // qué rol tiene
+                .claim("turno", usuario.getTurno() == null ? null : usuario.getTurno().getCodigo())  // en qué turno entró
                 .issuedAt(Date.from(ahora))                     // cuándo se creó
                 .expiration(Date.from(ahora.plus(DURACION)))    // hasta cuándo vale
                 .signWith(CLAVE)

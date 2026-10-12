@@ -9,6 +9,16 @@
 export interface LoginRequestDTO {
   correo: string;
   password: string;
+  // 🕘 Código del turno que elige quien inicia sesión (MANANA o TARDE)
+  turno: string;
+}
+
+// 🕘 Turno de trabajo (tabla "turnos" de MySQL). GET /auth/turnos
+export interface TurnoDTO {
+  codigo: string;
+  nombre: string;
+  horaInicio: string; // "06:00"
+  horaFin: string;    // "14:30"
 }
 
 // 👤 Datos del usuario que inició sesión
@@ -18,6 +28,8 @@ export interface UsuarioDTO {
   correo: string;
   // 🏷️ Los 4 roles definidos en Jira (HU01). Coinciden con la tabla "roles" de MySQL.
   rol: RolUsuario;
+  // 🕘 Turno elegido al iniciar sesión (null si la sesión es anterior a los turnos)
+  turno: TurnoDTO | null;
 }
 
 export type RolUsuario = 'ADMINISTRADOR' | 'ENCARGADO_PRODUCCION' | 'CAJERO' | 'ALMACENERO';
