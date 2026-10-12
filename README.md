@@ -9,7 +9,7 @@ Cumple el Sprint 1 de Jira:
 ## Arquitectura (según el esquema del proyecto)
 
 ```
-FRONTEND  React + TypeScript + Tailwind        (carpeta frontend/,  http://localhost:5173)
+FRONTEND  React + TypeScript + Tailwind        (carpeta frontend/, se abre en http://localhost:8087/santapatricia/)
     │  peticiones HTTP con JSON  (GET, POST, PUT, DELETE)
     ▼
 BACKEND   Java + Servlets en GlassFish 8        (carpeta backend/,   http://localhost:8087/santapatricia)
