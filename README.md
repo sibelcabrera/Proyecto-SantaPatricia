@@ -70,17 +70,20 @@ Al final se ven los 6 usuarios y los productos por área.
 1. Si tu MySQL **no** usa la contraseña `root`, cámbiala en
    `backend/src/main/resources/config.properties` → línea `db.password=`.
 2. NetBeans → *File → Open Project →* carpeta **`backend`** (ícono de mundo 🌐).
-3. Botón **Run ▶**. NetBeans compila, arranca GlassFish, despliega y abre el navegador en
-   **http://localhost:8087/santapatricia**.
-4. Esa página debe mostrar dos puntos verdes: **backend funcionando** y **base de datos conectada**.
+3. Botón **Run ▶**. NetBeans compila, arranca GlassFish y abre el navegador **directo en el login**:
+   **http://localhost:8087/santapatricia/** → **¡listo, no hace falta nada más!**
 
-### 3. Frontend (VS Code)
-1. VS Code → *File → Open Folder →* carpeta **`frontend`**.
-2. Menú *Terminal → New Terminal* y escribe:
+El frontend React **ya viene compilado dentro del backend** (carpeta `backend/src/main/webapp/app`),
+por eso con solo Run funciona todo. Estado del backend y lista de la API: http://localhost:8087/santapatricia/estado.html
+
+### 3. Solo para quien modifique el diseño del frontend (VS Code)
+1. VS Code → *File → Open Folder →* carpeta **`frontend`** → *Terminal → New Terminal*.
+2. Para ver los cambios en vivo mientras diseñas: `npm run dev` (abre http://localhost:5173).
+3. **Cuando termines**, para que los cambios lleguen al sistema que abre NetBeans:
    ```
-   npm run dev
+   npm run build
    ```
-3. Se abre solo el navegador en el **login**: http://localhost:5173
+   Esto copia la versión final dentro del backend. Luego pulsa **Run** otra vez en NetBeans.
 
 > La primera vez en otra PC, si falta la carpeta `node_modules`, ejecuten antes `npm install`.
 
@@ -156,6 +159,7 @@ y validaciones). Usan datos en memoria, **no necesitan MySQL**.
 |---|---|
 | La página del backend dice *"base de datos SIN CONEXIÓN"* | MySQL apagado, falta ejecutar los scripts o la contraseña de `config.properties` no es la tuya |
 | El login dice *"No se pudo conectar con el servidor"* | El backend no está corriendo: pulsa Run en NetBeans |
+| `localhost:5173` dice *"rechazó la conexión"* | Ese es el modo diseño (`npm run dev`). Para usar el sistema entra a http://localhost:8087/santapatricia/ |
 | En NetBeans: `PKIX path building failed` | Antivirus que revisa HTTPS (Norton). *Tools → Options → Java → Maven → Global Execution Options:* `-Djavax.net.ssl.trustStoreType=Windows-ROOT` |
 | `npm run dev` dice *"no se reconoce npm"* | Falta instalar Node.js |
 | El front muestra datos inventados | En `frontend/.env` debe decir `VITE_USE_MOCKS=false` |

@@ -23,4 +23,7 @@ export const routes = [
   { path: '*', element: <Navigate to="/" replace /> },
 ];
 
-export const router = createBrowserRouter(routes);
+// basename: en desarrollo es "/" ; dentro del backend es "/santapatricia/app" (ver vite.config.ts)
+export const router = createBrowserRouter(routes, {
+  basename: import.meta.env.BASE_URL.replace(/\/$/, '') || '/',
+});

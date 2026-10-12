@@ -29,6 +29,16 @@
         <url-pattern>/api/*</url-pattern>
     </filter-mapping>
 
+    <!-- 3. FrontendFilter -> sirve la aplicación React que está en /app/ -->
+    <filter>
+        <filter-name>FrontendFilter</filter-name>
+        <filter-class>pe.edu.isil.santapatricia.config.FrontendFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FrontendFilter</filter-name>
+        <url-pattern>/app/*</url-pattern>
+    </filter-mapping>
+
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
