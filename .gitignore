@@ -11,3 +11,6 @@ frontend/dist/
 Thumbs.db
 desktop.ini
 .idea/
+
+# Configuración local con contraseñas: cada integrante crea la suya desde config.example.properties
+backend/src/main/resources/config.properties

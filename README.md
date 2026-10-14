@@ -67,8 +67,9 @@ Al final se ven los 6 usuarios y los productos por área.
 > `esquema.sql` **borra y vuelve a crear** `santapatricia_db`. Ejecútenlo de nuevo cuando quieran volver a los datos iniciales.
 
 ### 2. Backend (NetBeans)
-1. Si tu MySQL **no** usa la contraseña `root`, cámbiala en
-   `backend/src/main/resources/config.properties` → línea `db.password=`.
+1. En `backend/src/main/resources/` copia `config.example.properties` y renombra la copia a
+   **`config.properties`**. Ahí pon tu contraseña de MySQL (`db.password=`) y una clave propia en `jwt.clave=`
+   (32 caracteres o más). Este archivo **no se sube a GitHub** porque guarda contraseñas.
 2. NetBeans → *File → Open Project →* carpeta **`backend`** (ícono de mundo 🌐).
 3. Botón **Run ▶**. NetBeans compila, arranca GlassFish y abre el navegador **directo en el login**:
    **http://localhost:8087/santapatricia/** → **¡listo, no hace falta nada más!**
